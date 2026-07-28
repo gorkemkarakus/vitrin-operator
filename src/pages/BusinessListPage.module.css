@@ -1,0 +1,106 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.signOut {
+  width: auto;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.signOut:hover {
+  border-color: var(--text-dim);
+}
+
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.content h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.sub {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(43, 43, 38, 0.06);
+  cursor: pointer;
+  transition: border-color 0.15s;
+  font-family: var(--font-body);
+}
+
+.card:hover {
+  border-color: var(--signal);
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cardName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cardSlug {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 16, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modalCard {
+  width: 100%;
+  max-width: 420px;
+}
