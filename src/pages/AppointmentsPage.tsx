@@ -158,8 +158,11 @@ export default function AppointmentsPage() {
     }>('operator-appointments', { action, business_id: businessId, ...payload })
   }
 
-  async function loadData() {
-    setLoading(true)
+  // "silent=true" bir mutasyondan sonra cagrilir — veriyi arka planda
+  // tazeler ama "loading" bayragini geri true yapmaz, boylece sayfa her
+  // islemden sonra bos "Yükleniyor…" yazisina donup yeniden cizilmiyor.
+  async function loadData(silent = false) {
+    if (!silent) setLoading(true)
     const { data } = await callAppointments('load')
     setAppointments(data?.appointments ?? [])
     setCustomers(data?.customers ?? [])
@@ -299,7 +302,7 @@ export default function AppointmentsPage() {
       setEmployeeId('')
       setApptTime('')
       setSourceNote('')
-      await loadData()
+      await loadData(true)
       setShowForm(false)
     } finally {
       setSubmitting(false)
@@ -313,7 +316,7 @@ export default function AppointmentsPage() {
       appointment_id: appt.id,
       status,
     })
-    await loadData()
+    await loadData(true)
   }
 
   function shiftDate(days: number) {

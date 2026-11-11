@@ -115,8 +115,12 @@ export default function TeamPage() {
     return callOperator('operator-team', { action, business_id: businessId, ...payload })
   }
 
-  async function loadData() {
-    setLoading(true)
+  // "silent=true" kucuk bir islemden (checkbox, saat ekleme/kaldirma) sonra
+  // cagrilir — veriyi arka planda tazeler ama "loading" bayragini geri true
+  // yapmaz, boylece tum sayfa her tikta bos "Yükleniyor…" yazisina donup
+  // yeniden cizilmiyor.
+  async function loadData(silent = false) {
+    if (!silent) setLoading(true)
     const { data } = await callOperator<{
       categories: Category[]
       services: Service[]
@@ -146,12 +150,12 @@ export default function TeamPage() {
 
   async function handleServiceCategoryChange(serviceId: string, categoryId: string) {
     await callTeam('update_service_category', { service_id: serviceId, category_id: categoryId || null })
-    await loadData()
+    await loadData(true)
   }
 
   async function toggleEmployeeCategory(profileId: string, categoryId: string, checked: boolean) {
     await callTeam('toggle_employee_category', { profile_id: profileId, category_id: categoryId, checked })
-    await loadData()
+    await loadData(true)
   }
 
   async function addSchedules(profileId: string) {
@@ -164,12 +168,12 @@ export default function TeamPage() {
       ),
     )
     setDraft(profileId, { days: new Set(), start: '', end: '' })
-    await loadData()
+    await loadData(true)
   }
 
   async function removeSchedule(id: string) {
     await callTeam('remove_schedule', { schedule_id: id })
-    await loadData()
+    await loadData(true)
   }
 
   async function addBlock(profileId: string) {
@@ -186,12 +190,12 @@ export default function TeamPage() {
       label: draft.label.trim() || null,
     })
     setBlockDraftFor(profileId, { mode: 'day', day: 1, date: '', start: '', end: '', label: '' })
-    await loadData()
+    await loadData(true)
   }
 
   async function removeBlock(id: string) {
     await callTeam('remove_block', { block_id: id })
-    await loadData()
+    await loadData(true)
   }
 
   if (loading) return <p style={{ color: 'var(--text-dim)' }}>Yükleniyor…</p>

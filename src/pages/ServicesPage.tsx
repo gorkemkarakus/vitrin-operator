@@ -36,8 +36,11 @@ export default function ServicesPage() {
     return callOperator('operator-services', { action, business_id: businessId, ...payload })
   }
 
-  async function loadData() {
-    setLoading(true)
+  // "silent=true" bir mutasyondan sonra cagrilir — veriyi arka planda
+  // tazeler ama "loading" bayragini geri true yapmaz, boylece sayfa her
+  // islemden sonra bos "Yükleniyor…" yazisina donup yeniden cizilmiyor.
+  async function loadData(silent = false) {
+    if (!silent) setLoading(true)
     const { data } = await callOperator<{ services: Service[]; monthAppointments: MonthAppointment[] }>(
       'operator-services',
       { action: 'load', business_id: businessId },
@@ -70,13 +73,13 @@ export default function ServicesPage() {
     setName('')
     setDuration('60')
     setPrice('')
-    await loadData()
+    await loadData(true)
     setSubmitting(false)
   }
 
   async function updateService(service: Service, patch: Partial<Service>) {
     await callServices('update', { service_id: service.id, patch })
-    await loadData()
+    await loadData(true)
   }
 
   async function deleteService(service: Service) {
@@ -85,7 +88,7 @@ export default function ServicesPage() {
     )
     if (!ok) return
     await callServices('delete', { service_id: service.id })
-    await loadData()
+    await loadData(true)
   }
 
   if (loading) return <p style={{ color: 'var(--text-dim)' }}>Yükleniyor…</p>
